@@ -35,11 +35,16 @@ const [showMsgMenu, setShowMsgMenu] = useState(false);// to show/hide message me
 //reply to 
   const handleReply = (msg) => {
 
+      if (msg.deletedForEveryone) return;
+
   setReplyTo({
-    
     id: msg.id,
     text: msg.text,
     senderId: msg.senderId,
+     senderName:
+    msg.senderId === user.uid
+      ? "You"
+      : msg.senderName || "User",
   });
 };
 
@@ -54,9 +59,19 @@ const cancelReply = () => {
     await addDoc(collection(db, "chats", activeChat, "messages"), {
       text: message,
       senderId: user.uid,
+        senderName: user.displayName || "You",
       createdAt: serverTimestamp(),
        deletedFor: [],              
-      deletedForEveryone: false
+      deletedForEveryone: false,
+
+        replyTo: replyTo
+      ? {
+          id: replyTo.id,
+          text: replyTo.text,
+          senderId: replyTo.senderId,
+           senderName: replyTo.senderName,
+        }
+      : null,
     });
 
     await updateDoc(doc(db, "chats", activeChat), {
@@ -65,6 +80,7 @@ const cancelReply = () => {
     });
 
     setMessage("");
+    setReplyTo(null);
   };
 
   //  READ MESSAGES
@@ -207,7 +223,12 @@ setReplyTo(null);
                     msg.senderId === user.uid ? "me" : "other"
                   }`}
 
-                      onClick={() => handleReply(msg)} // reply to message on click
+                      onClick={() => {// reply to message on click
+                        if (!msg.deletedForEveryone) {
+                         handleReply(msg);
+                       }
+                      }
+  }  
 
                       onContextMenu={(e) => {                   //  delete menu
                           setReplyTo(null); 
@@ -216,6 +237,21 @@ setReplyTo(null);
                           setShowDeleteMenu(true);
     }}
                 >
+
+                  {msg.replyTo && (
+  <div className="reply-bubble-inline">
+    <div className="reply-sender">
+      Replying to {
+  msg.replyTo.senderName ||
+  (msg.replyTo.senderId === user.uid ? "You" : "User")
+}
+    </div>
+    <div className="reply-text">
+      {msg.replyTo.text}
+    </div>
+  </div>
+)}
+
                   {msg.deletedForEveryone ? (
                       <i style={{ color: "#888", fontStyle: "italic" }}>
                         This message was deleted
@@ -250,7 +286,7 @@ setReplyTo(null);
     <div
       className="msg-context-menu"
     >
- 
+ {!selectedMsg?.deletedForEveryone && (
     <button
       onClick={() => {
         setShowMsgMenu(false);
@@ -259,7 +295,7 @@ setReplyTo(null);
     >
       Reply
     </button>
-
+ )}
     <button
       onClick={() => {
          setReplyTo(null); 

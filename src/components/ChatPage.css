@@ -836,6 +836,48 @@ background: linear-gradient(90deg, #2f6f62, #3b82f6);
   }
 }
 
+
+.reply-bubble {
+  background: #e8f5e9;
+  border-left: 4px solid #2649e7;
+  padding: 6px;
+  margin-bottom: 4px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.reply-sender {
+  font-weight: 600;
+  font-size: 11px;
+}
+
+.reply-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.reply-bubble-inline {
+  background: rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #2649e7;
+  padding: 6px 8px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+
+.reply-bubble-inline .reply-sender {
+  font-size: 12px;
+  font-weight: 600;
+  color: #2649e7;
+}
+
+.reply-bubble-inline .reply-text {
+  font-size: 12px;
+  color: #393737;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* ================= MOBILE RESPONSIVE ================= */
 @media (max-width: 768px) {
 
