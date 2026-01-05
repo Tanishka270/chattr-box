@@ -29,6 +29,7 @@ const ChatUserItem = ({ chat, currentUserId, onSelectChat,activeChat }) => {
     const unsub = onSnapshot(doc(db, "users", otherUserId), (snap) => {
       setOtherUser(snap.data());
     });
+    
 
     return () => unsub();
   }, [chat.members, currentUserId]);
@@ -68,9 +69,22 @@ const ChatListNew = ({ onSelectChat, onNewChat ,activeChat}) => {
       where("members", "array-contains", user.uid)
     );
 
-    const unsub = onSnapshot(q, (snapshot) => {
-      setChats(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
-    });
+
+   const unsub = onSnapshot(q, (snapshot) => {
+  const list = snapshot.docs.map((d) => ({
+    id: d.id,
+    ...d.data(),
+  }));
+
+  // sorting acc to new mssg arrive
+  list.sort(
+    (a, b) =>
+      (b.updatedAt?.seconds || 0) -
+      (a.updatedAt?.seconds || 0)
+  );
+
+  setChats(list);
+});
 
     return () => unsub();
   }, [user]);

@@ -27,6 +27,8 @@
   display: flex;
   flex-direction: column;
     /* justify-content: flex-end; */
+      overflow-y: auto;
+  overflow-x: visible;
 }
 
 .message {
@@ -211,6 +213,8 @@
   border-right: 1px solid #e5e7eb;
   display: flex;
   flex-direction: column;
+    position: relative;
+  z-index: 1;
 }
 
 /* Header */
@@ -791,7 +795,7 @@ background: linear-gradient(90deg, #2f6f62, #3b82f6);
 .msg-context-menu {
   position: absolute;
   top: 26px;
-  right: 4px;
+  left: 6px;
 
   background: #ffffff;
   border-radius: 12px;
@@ -800,7 +804,7 @@ background: linear-gradient(90deg, #2f6f62, #3b82f6);
   padding: 6px 0;
   width: 140px;
 
-  z-index: 60;
+  z-index: 9999;
   animation: fadeScale 0.15s ease;
     top: 50%;
   transform: translateY(35%); 

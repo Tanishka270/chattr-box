@@ -56,13 +56,19 @@ const cancelReply = () => {
   const sendMessage = async () => {
     if (!message.trim() || !activeChat) return;
 
+
+  const msg = message;   // save text
+  setMessage("");        // ✅ INPUT TURANT CLEAR
+  // setReplyTo(null);
+
     await addDoc(collection(db, "chats", activeChat, "messages"), {
-      text: message,
+      text: msg,
       senderId: user.uid,
         senderName: user.displayName || "You",
       createdAt: serverTimestamp(),
        deletedFor: [],              
       deletedForEveryone: false,
+      
 
         replyTo: replyTo
       ? {
@@ -75,7 +81,7 @@ const cancelReply = () => {
     });
 
     await updateDoc(doc(db, "chats", activeChat), {
-      lastMessage: message,
+      lastMessage: msg,
       updatedAt: serverTimestamp(),
     });
 
@@ -84,25 +90,38 @@ const cancelReply = () => {
   };
 
   //  READ MESSAGES
-  useEffect(() => {
-    if (!activeChat) return;
+// READ MESSAGES
+useEffect(() => {
+  if (!activeChat || !user) return;
 
-    const q = query(
-      collection(db, "chats", activeChat, "messages"),
-      orderBy("createdAt")
-    );
+  const q = query(
+    collection(db, "chats", activeChat, "messages"),
+    orderBy("createdAt")
+  );
 
-    const unsub = onSnapshot(q, (snapshot) => {
-      setMessages(
-        snapshot.docs.map((d) => ({
-          id: d.id,
-          ...d.data(),
-        }))
-      );
-    });
+  const unsub = onSnapshot(q, async (snapshot) => {
+    const msgs = snapshot.docs.map((d) => ({
+      id: d.id,
+      ...d.data(),
+    }));
 
-    return () => unsub();
-  }, [activeChat]);
+    setMessages(msgs);
+
+    if (msgs.length === 0) return;
+
+    const lastMsg = msgs[msgs.length - 1];
+
+    // 🔥 receiver side chat top pe lane ke liye
+    if (lastMsg.senderId !== user.uid) {
+      await updateDoc(doc(db, "chats", activeChat), {
+        lastMessage: lastMsg.text,
+        updatedAt: serverTimestamp(),
+      });
+    }
+  });
+
+  return () => unsub();
+}, [activeChat, user]);
 
   //  AUTO SCROLL
   useEffect(() => {
