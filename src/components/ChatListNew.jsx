@@ -60,6 +60,7 @@ const ChatListNew = ({ onSelectChat, onNewChat ,activeChat}) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [chats, setChats] = useState([]);
+const [showLoginHint, setShowLoginHint] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -91,6 +92,11 @@ const ChatListNew = ({ onSelectChat, onNewChat ,activeChat}) => {
 
   if (!user) return null;
 
+
+  const handleNewChatClick = () => {
+  onNewChat(); // normal user ke liye
+};
+
   return (
     <div style={{ width: "300px", borderRight: "1px solid #ddd" }}>
       {/* 🔴 LOGOUT */}
@@ -118,12 +124,25 @@ const ChatListNew = ({ onSelectChat, onNewChat ,activeChat}) => {
       {/*  NEW CHAT (ONLY OPEN USERS) */}
       <div style={{ padding: "10px", borderBottom: "1px solid #eee" }}>
         <button
-  onClick={onNewChat}
+  onClick={ handleNewChatClick}
   className="new-chat-btn"
 >
+  
   + New Chat
 </button>
       </div>
+
+      {showLoginHint && user?.isGuest && (
+  <div className="login-hint">
+    <p>Login to start a new chat ✨</p>
+    <button
+      className="login-hint-btn"
+      onClick={() => navigate("/login")}
+    >
+      Sign in with Google
+    </button>
+  </div>
+)}
 
       {/*  CHAT LIST */}
       <h3 style={{ padding: "10px", margin: 0 }}>Chats</h3>

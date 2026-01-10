@@ -30,8 +30,13 @@ export const AuthProvider = ({ children }) => {
       }
       
         //  USER LOGGED OUT
- else {
-  setUser(null);
+    else {
+      const guest = localStorage.getItem("guestUser");
+      if (guest) {
+        setUser(JSON.parse(guest));
+      } else {
+        setUser(null);
+      }
 }
 
     });

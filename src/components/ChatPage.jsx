@@ -3,6 +3,7 @@ import { db } from "./firebase";
 import "./ChatPage.css";
 import ChatListNew from "./ChatListNew";
 import UsersList from "./UsersList";
+import { useNavigate } from "react-router-dom";
 import {
   collection,
   addDoc,
@@ -16,6 +17,8 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { useAuth } from "../contexts/Authcontext";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "./firebase";
 
 const ChatPage = () => {
   const { user } = useAuth();
@@ -28,6 +31,7 @@ const ChatPage = () => {
   const [selectedMsg, setSelectedMsg] = useState(null); //  jis message pe delete click hua
 const [showDeleteMenu, setShowDeleteMenu] = useState(false);
 const [showMsgMenu, setShowMsgMenu] = useState(false);// to show/hide message menu
+const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   const bottomRef = useRef(null);
 
@@ -54,6 +58,13 @@ const cancelReply = () => {
 
   //  SEND MESSAGE
   const sendMessage = async () => {
+      // 🚫 Guest user restriction
+  if (user?.isGuest) {
+    setMessage("");    
+    setReplyTo(null);
+    setShowLoginPrompt(true);
+    return;
+  }
     if (!message.trim() || !activeChat) return;
 
 
@@ -184,6 +195,15 @@ setReplyTo(null);
 
   if (!user) return <div>Loading...</div>;
 
+  const loginWithGoogle = async () => {
+  try {
+    await signInWithPopup(auth, googleProvider);
+    setShowLoginPrompt(false); // popup band
+  } catch (err) {
+    console.error(err);
+  }
+};
+
   return (
    <div className={`chat-layout ${activeChat ? "chat-open" : ""}`}>
       {/* LEFT SIDEBAR */}
@@ -220,6 +240,12 @@ setReplyTo(null);
   </span>
 
   <span>Chat</span>
+
+  {user?.isGuest && (
+  <span className="guest-badge">
+    Guest Mode
+  </span>
+)}
 
   <button
     className="delete-chat-btn"
@@ -384,6 +410,33 @@ setReplyTo(null);
   </div>
 )}
 
+
+{/*  LOGIN REQUIRED POPUP */}
+{showLoginPrompt && (
+  <div className="login-popup-overlay">
+    <div className="login-popup">
+      <h3>Login required</h3>
+      <p>
+        Guest users can explore chats,  
+        but to send messages you need to sign in.
+      </p>
+
+      <button
+        className="login-popup-btn"
+        onClick={loginWithGoogle}
+      >
+        Sign in with Google
+      </button>
+
+      <button
+        className="login-popup-cancel"
+        onClick={() => setShowLoginPrompt(false)}
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+)}
 
 {replyTo && (
   <div className="reply-preview">

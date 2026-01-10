@@ -14,10 +14,19 @@ const Login = () => {
     navigate("/chats"); 
   };
 
-   const loginwithfacebook = async () => {
-    await signInWithPopup(auth, facebookProvider);
-    navigate("/chats"); 
+  const handleGuestLogin = () => {
+  const guestUser = {
+    uid: "guest_" + Date.now(), // unique id for guest
+    displayName: "Guest User",
+    isGuest: true,
   };
+
+  // save guest user info in local storage
+  localStorage.setItem("guestUser", JSON.stringify(guestUser));
+
+  // Redirect to chats page
+  navigate("/chats");
+};
 
   return (
     <div id="login-page">
@@ -32,14 +41,13 @@ const Login = () => {
         </div>
 
         <br /><br />
-
-        <div
-          className="login-button facebook"
-          onClick={() => loginwithfacebook(auth, facebookProvider)}
+        <button
+          className="guest-btn"
+          onClick={handleGuestLogin}
         >
-          <FacebookOutlined /> Sign in with Facebook
-        </div>
-      </div>
+          👤 Continue as Guest
+        </button>
+            </div>
     </div>
   );
 };
