@@ -19,10 +19,20 @@ import {
 import { useAuth } from "../contexts/Authcontext";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "./firebase";
+import ProfileIncomplete from "./ProfileIncomplete";
+import { isProfileComplete } from "../utilities/profilestatus";
+import { getDoc } from "firebase/firestore";
+import Profile from "./Profile";
+import SidebarProfileButton from "./SidebarProfileButton";
+
+
+
+
+
 
 const ChatPage = () => {
   const { user } = useAuth();
-
+ const navigate = useNavigate();
   const [activeChat, setActiveChat] = useState(null);
   const [showUsers, setShowUsers] = useState(false);
   const [message, setMessage] = useState("");
@@ -32,6 +42,9 @@ const ChatPage = () => {
 const [showDeleteMenu, setShowDeleteMenu] = useState(false);
 const [showMsgMenu, setShowMsgMenu] = useState(false);// to show/hide message menu
 const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+const [showProfile, setShowProfile] = useState(false); // to show/hide profile
+const [chatUser, setChatUser] = useState(null);  
+
 
   const bottomRef = useRef(null);
 
@@ -194,6 +207,9 @@ setReplyTo(null);
 
 
   if (!user) return <div>Loading...</div>;
+  if (user &&  !user.isGuest && !isProfileComplete(user)) {
+  return <ProfileIncomplete />;
+}
 
   const loginWithGoogle = async () => {
   try {
@@ -204,42 +220,98 @@ setReplyTo(null);
   }
 };
 
+
+
+
   return (
    <div className={`chat-layout ${activeChat ? "chat-open" : ""}`}>
       {/* LEFT SIDEBAR */}
-      <div>
+      <div className="sidebar">
+        <div className="sidebar-scroll">
         {!showUsers ? (
-          <ChatListNew activeChat={activeChat} 
-            onSelectChat={(id) => {
-              setActiveChat(id);
-              setShowUsers(false);
-            }}
-            onNewChat={() => setShowUsers(true)}
-          />
+              <ChatListNew
+        activeChat={activeChat}
+       onSelectChat={async (chatId) => {
+  setActiveChat(chatId);
+    setChatUser(null); 
+  setShowUsers(false);
+  setShowProfile(false);
+
+  const chatSnap = await getDoc(doc(db, "chats", chatId));
+  if (!chatSnap.exists()) return;
+
+  const chatData = chatSnap.data();
+
+
+  const otherUserId = chatData.members.find(
+    (uid) => uid !== user.uid
+  );
+
+  if (!otherUserId) return;
+
+  const userSnap = await getDoc(doc(db, "users", otherUserId));
+  if (userSnap.exists()) {
+    setChatUser(userSnap.data());
+  }
+}}
+       onNewChat={() => setShowUsers(true)}
+      />
         ) : (
-          <UsersList
-            onSelectChat={(id) => {
-              setActiveChat(id);
-              setShowUsers(false);
-            }}
-            onClose={() => setShowUsers(false)}
-          />
+        <UsersList
+  onSelectChat={(chatId, otherUser) => {
+    setActiveChat(chatId);
+    setChatUser(otherUser);  
+    setShowUsers(false);
+    setShowProfile(false);
+  }}
+  onClose={() => setShowUsers(false)}
+/>
         )}
+          </div>
+
+         <SidebarProfileButton />
       </div>
 
       {/* RIGHT CHAT */}
       <div className="chat-container">
-        {activeChat ? (
+{activeChat ? (
+  showProfile ? (
+    <Profile
+    profileUser={chatUser}
+    onBack={() => setShowProfile(false)}
+  />
+  ) : (
           <>
             <div className="chat-header">
-  <span
-    className="mobile-back"
-    onClick={() => setActiveChat(null)}
-  >
-    ←
-  </span>
 
-  <span>Chat</span>
+
+<span
+  className="mobile-back"
+  onClick={() => {
+    setShowProfile(false);
+    setActiveChat(null);
+  }}
+>
+  ←
+</span>
+          
+
+  <div
+  className="chat-user"
+  onClick={() => setShowProfile(true)}
+>
+  <div className="chat-avatar">
+   {chatUser?.avatar || "👤"}
+  </div>
+  <span className="chat-username">
+    <h3>
+  {chatUser?.username || chatUser?.displayName || chatUser?.name || "User"}
+</h3>
+  </span>
+  {/* <p>{chatUser?.status}</p>
+<p>{chatUser?.bio}</p> */}
+</div>
+
 
   {user?.isGuest && (
   <span className="guest-badge">
@@ -254,6 +326,8 @@ setReplyTo(null);
     🗑️ Delete Chat
   </button>
 </div>
+
+
 
             <div className="chat-messages">
               {messages  .filter( // filter out messages deleted for me
@@ -296,6 +370,7 @@ setReplyTo(null);
     </div>
   </div>
 )}
+
 
                   {msg.deletedForEveryone ? (
                       <i style={{ color: "#888", fontStyle: "italic" }}>
@@ -364,7 +439,7 @@ setReplyTo(null);
                     })}
                   </div>
                 </div>
-              ))}
+              ))} 
               <div ref={bottomRef} />
             </div>
 
@@ -463,7 +538,12 @@ setReplyTo(null);
               />
               <button onClick={sendMessage}>Send</button>
             </div>
+
+            
           </>
+
+          
+           )
         ) : (
   <div className="empty-state">
     <div className="empty-illustration">

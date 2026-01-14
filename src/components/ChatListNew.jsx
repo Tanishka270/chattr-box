@@ -45,7 +45,12 @@ const ChatUserItem = ({ chat, currentUserId, onSelectChat,activeChat }) => {
           otherUser?.isOnline ? "online" : "offline"
         }`}
       />
-      <b>{otherUser?.name || "User"}</b>
+    <b>
+  {otherUser?.username ||
+   otherUser?.displayName ||
+   otherUser?.name ||
+   "User"}
+</b>
     </div>
 
   <div className="last-msg">

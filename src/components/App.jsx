@@ -3,6 +3,9 @@ import Login from "./Login";
 import ChatPage from "./ChatPage";
 import ProtectedRoute from "./ProtectedRoute";
 import { AuthProvider } from "../contexts/Authcontext";
+import Profile from "./Profile";
+import ProfileIncomplete from "./ProfileIncomplete";
+
 
 function App() {
   return (
@@ -23,6 +26,8 @@ function App() {
           />
 
           <Route path="*" element={<Navigate to="/login" replace />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile-incomplete" element={<ProfileIncomplete />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

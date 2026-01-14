@@ -1,0 +1,95 @@
+.profile-incomplete-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    circle at top left,
+    #dbeafe,
+    #eef2f5 60%
+  );
+  padding: 24px;
+}
+
+.profile-incomplete-card {
+  width: 420px;
+  background: white;
+  border-radius: 22px;
+  padding: 36px 32px;
+  text-align: center;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+  animation: popIn 0.5s ease;
+}
+
+.profile-incomplete-card h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.profile-incomplete-card p {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.complete-profile-btn {
+  margin-top: 28px;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #3b82f6, #22c1a3);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.complete-profile-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(34, 193, 163, 0.45);
+}
+
+.profile-incomplete-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(59,130,246,0.18), transparent 40%),
+    radial-gradient(circle at 70% 60%, rgba(34,193,163,0.18), transparent 40%);
+  filter: blur(60px);
+  z-index: 0;
+}
+
+.profile-incomplete-page {
+  position: relative;
+}
+
+.profile-incomplete-card {
+  position: relative;
+  z-index: 1;
+}
+.profile-error {
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  background: #fff1f2;
+  color: #b91c1c;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 10px;
+  border: 1px solid #fecaca;
+}
+/* subtle entry animation */
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

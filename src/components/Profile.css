@@ -1,0 +1,219 @@
+/* Page */
+.profile-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #eef2f5;
+    padding: 60px 24px;
+      align-items: flex-start;
+background:
+    radial-gradient(
+      circle at top left,
+      rgba(59, 130, 246, 0.22),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(34, 193, 163, 0.22),
+      transparent 45%
+    ),
+    linear-gradient(180deg, #f5f9ff, #eef2f7);
+}
+
+/* Card */
+.profile-card {
+  width: 700px;
+  min-height: 720px;
+  background: white;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header gradient */
+.profile-header-gradient {
+  position: relative;
+  padding: 40px 20px 60px;
+  text-align: center;
+  background: linear-gradient(135deg, #3b82f6, #22c1a3);
+  color: white;
+}
+
+/* Back */
+.profile-back {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* Avatar */
+.profile-avatar {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background: white;
+  color: #3b82f6;
+  font-size: 44px;
+  font-weight: 650;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Name */
+.profile-realname {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+    opacity: 1.85;
+}
+
+/* Emoji */
+.profile-emoji {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 22px;
+}
+
+/* Body */
+.profile-body {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  flex: 1;
+}
+
+/* Field */
+.profile-field label {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* Inputs */
+.profile-field input,
+.profile-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  background: #fff;
+}
+
+.profile-field textarea {
+  min-height: 160px;
+  resize: none;
+}
+
+/* Focus */
+.profile-field input:focus,
+.profile-field textarea:focus,
+.profile-field select:focus {
+  outline: none;
+  border-color: #22c1a3;
+  box-shadow: 0 0 0 3px rgba(34,193,163,0.2);
+}
+
+/* Save button */
+.profile-save-btn {
+  margin-top: auto; /* 🔥 real solution */
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #3b82f6, #22c1a3);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.profile-save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(34,193,163,0.45);
+}
+
+.profile-save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.profile-select {
+  width: 100%;
+  padding: 14px 44px 14px 16px;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  background-color: #fff;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23666' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 12px;
+  cursor: pointer;
+}
+
+.profile-select:focus {
+  outline: none;
+  border-color: #22c1a3;
+  box-shadow: 0 0 0 3px rgba(34,193,163,0.2);
+}
+
+.profile-username {
+  margin: 10px 0 1px;
+  font-size: 52px;
+  font-weight: 600;
+}
+
+.profile-char-count {
+  text-align: right;
+  font-size: 12px;
+  color: #888;
+  margin-top: 6px;
+}
+
+.avatar-picker {
+  display: flex;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.avatar-option {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.avatar-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+}
+
+.avatar-option.active {
+  border-color: #22c1a3;
+  background: #e6fffa;
+  box-shadow: 0 8px 20px rgba(34,193,163,0.4);
+}

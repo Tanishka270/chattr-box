@@ -1023,6 +1023,75 @@ background: linear-gradient(90deg, #2f6f62, #3b82f6);
     opacity: 1;
   }
 }
+
+
+.profile-btn {
+  margin-left: auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+    font-size: 18px;
+}
+
+.profile-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(1.05);
+}
+
+.chat-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.chat-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.chat-username {
+  font-weight: 600;
+  font-size: 15px;
+  color: white;
+}
+
+/* ===== SIDEBAR CONTAINER ===== */
+.sidebar {
+  width: 300px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+}
+
+/* ===== SCROLLABLE CHAT LIST ===== */
+.sidebar-scroll {
+  flex: 1;
+  overflow-y: auto;
+}
+
+
+
+
+
+
+
 /* ================= MOBILE RESPONSIVE ================= */
 @media (max-width: 768px) {
 

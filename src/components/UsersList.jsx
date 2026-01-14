@@ -23,8 +23,13 @@ const UsersList = ({ onSelectChat, onClose }) => {
     const unsub = onSnapshot(collection(db, "users"), (snap) => {
       setUsers(
         snap.docs
-          .map((d) => d.data())
-          .filter((u) => u.uid !== user.uid)
+         .map((d) => d.data())
+.filter(
+  (u) =>
+    u.uid &&             
+    u.name &&            
+    u.uid !== user.uid
+)
       );
     });
 
@@ -33,8 +38,10 @@ const UsersList = ({ onSelectChat, onClose }) => {
 
 
   //  Start or open a chat with another user
- const startChat = async (otherUser) => {
-  if (!user) return;
+const startChat = async (otherUser) => {
+  if (!user?.uid || !otherUser?.uid) {
+    return;
+  }
 
   // 1. Check if a chat already exists with this user
   const q = query(
@@ -57,7 +64,7 @@ const UsersList = ({ onSelectChat, onClose }) => {
 
   // 2.  If chat exists  → open karo
   if (existingChatId) {
-    onSelectChat(existingChatId);
+    onSelectChat(existingChatId,otherUser);
     onClose(); // users list band
     return;
   }
@@ -70,8 +77,7 @@ const UsersList = ({ onSelectChat, onClose }) => {
     lastMessage: "",
   });
 
-  // Open new chat and close users list
-  onSelectChat(chatRef.id);
+onSelectChat(chatRef.id, otherUser);
   onClose();
 };
 
@@ -83,14 +89,16 @@ const UsersList = ({ onSelectChat, onClose }) => {
   <div
     key={u.uid}
     onClick={() => startChat(u)}
-    className="user-item"
+    className="user-item" 
   >
     <span
       className={`status-dot ${u.isOnline ? "online" : "offline"}`}
     />
 
     <div className="user-info">
-      <b>{u.name}</b>
+     <b>
+  {u.username || u.displayName || u.name || "User"}
+</b>
       <div className="user-email">{u.email}</div>
     </div>
   </div>
