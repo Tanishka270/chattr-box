@@ -52,3 +52,54 @@
   font-size: 12px;
   color: #6c757d;
 } 
+
+/* ================= SIDEBAR PROFILE – MOBILE ================= */
+@media (max-width: 768px) {
+
+  .sidebar-profile-wrapper {
+    padding: 10px;
+    background: #f9fafb;
+  }
+
+  .sidebar-profile-btn {
+    padding: 12px;
+    gap: 10px;
+    border-radius: 10px;
+  }
+
+  .sidebar-profile-avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+
+  .sidebar-profile-name {
+    font-size: 13px;
+  }
+
+  .sidebar-profile-sub {
+    font-size: 11px;
+  }
+}
+
+/* EXTRA SMALL DEVICES */
+@media (max-width: 480px) {
+
+  .sidebar-profile-btn {
+    padding: 10px;
+  }
+
+  .sidebar-profile-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .sidebar-profile-name {
+    font-size: 12.5px;
+  }
+
+  .sidebar-profile-sub {
+    font-size: 10.5px;
+  }
+}

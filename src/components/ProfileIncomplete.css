@@ -93,3 +93,32 @@
     transform: scale(1) translateY(0);
   }
 }
+/* ================= MOBILE RESPONSIVE ================= */
+@media (max-width: 768px) {
+
+  .profile-incomplete-page {
+    padding: 20px 16px;
+    min-height: 100dvh;       /* mobile safe height */
+  }
+
+  .profile-incomplete-card {
+    width: 100%;
+    max-width: 380px;
+    padding: 28px 22px;
+    border-radius: 18px;
+  }
+
+  .profile-incomplete-card h2 {
+    font-size: 22px;
+  }
+
+  .profile-incomplete-card p {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .complete-profile-btn {
+    padding: 14px;
+    font-size: 15px;
+  }
+}
