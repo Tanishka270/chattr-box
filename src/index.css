@@ -45,7 +45,7 @@
 }
 
 /* Login Page */
-
+/* 
 #login-page {
    background: #4facfe;
   position: absolute;
@@ -56,6 +56,24 @@
    background-image: linear-gradient(#40a9ff, #096dd9);
   background-image: linear-gradient(to right, #40a9ff, #096dd9);
    background-image: linear-gradient(135deg, #6a11cb, #2575fc);
+} */
+
+#login-page {
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(59,130,246,0.35),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(34,193,163,0.35),
+      transparent 40%
+    ),
+    linear-gradient(135deg, #2563eb, #22c1a3);
 }
 
 #login-card {
