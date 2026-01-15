@@ -17,7 +17,6 @@ export const AuthProvider = ({ children }) => {
   setUser({
     uid: u.uid,
     email: u.email,
-    displayName: u.displayName,
     photoURL: u.photoURL,
     ...(snap.exists() ? snap.data() : {}),
   });
@@ -26,7 +25,7 @@ export const AuthProvider = ({ children }) => {
           doc(db, "users", u.uid),
           {
             uid: u.uid,
-            name: u.displayName || "User",
+             username: u.displayName || u.email?.split("@")[0],
             email: u.email,
             photoURL: u.photoURL || "",
             createdAt: serverTimestamp(),
@@ -41,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     else {
       const guest = localStorage.getItem("guestUser");
       if (guest) {
-        setUser(JSON.parse(guest));
+        setUser({...JSON.parse(guest), isGuest: true});
       } else {
         setUser(null);
       }
