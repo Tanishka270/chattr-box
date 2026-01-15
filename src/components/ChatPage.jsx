@@ -51,7 +51,8 @@ const [chatUser, setChatUser] = useState(null);
 
 //reply to 
   const handleReply = (msg) => {
-
+  if (!activeChat) return;
+  if (msg.chatId && msg.chatId !== activeChat) return;
       if (msg.deletedForEveryone) return;
 
   setReplyTo({
@@ -107,7 +108,8 @@ const cancelReply = () => {
     await updateDoc(doc(db, "chats", activeChat), {
       lastMessage: msg,
       lastSenderId: user.uid,
-      updatedAt: serverTimestamp(),  
+      updatedAt: serverTimestamp(), 
+      readBy: [user.uid], 
     });
 
     setMessage("");
@@ -222,8 +224,11 @@ setReplyTo(null);
   }
 };
 
-useEffect(() => { // chat change pe reply hata do
+useEffect(() => { // chat change pe reply cancel
   setReplyTo(null);
+  setSelectedMsg(null);
+  setShowMsgMenu(false);
+  setShowDeleteMenu(false);
 }, [activeChat]);
 
 

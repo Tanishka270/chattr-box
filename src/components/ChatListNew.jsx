@@ -6,12 +6,17 @@ import {
   where,
   onSnapshot,
   doc,
+  setDoc,
+  serverTimestamp,
+  updateDoc,
+  arrayUnion,
 } from "firebase/firestore";
 import { useAuth } from "../contexts/Authcontext";
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase";
 import { useNavigate } from "react-router-dom";
-import { setDoc, serverTimestamp } from "firebase/firestore";
+
+
 
 
 /*  Single Chat Row */
@@ -23,6 +28,7 @@ const isActive = activeChat === chat.id;
 const isUnread =
   chat.lastSenderId &&
   chat.lastSenderId !== currentUserId &&
+  !chat.readBy?.includes(currentUserId) &&
   !isActive;
 
   useEffect(() => {
@@ -46,7 +52,13 @@ const isUnread =
  className={`chat-item ${isActive ? "active" : ""} ${
   isUnread ? "unread" : ""
 }`}
-  onClick={() => onSelectChat(chat.id)}
+ onClick={async () => { // mark as read on click 
+  onSelectChat(chat.id);
+
+  await updateDoc(doc(db, "chats", chat.id), {
+    readBy: arrayUnion(currentUserId),
+  });
+}}
 >
   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
       <span
