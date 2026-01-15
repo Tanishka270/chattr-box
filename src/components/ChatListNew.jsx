@@ -18,6 +18,13 @@ import { setDoc, serverTimestamp } from "firebase/firestore";
 const ChatUserItem = ({ chat, currentUserId, onSelectChat,activeChat }) => {
   const [otherUser, setOtherUser] = useState(null);
 
+const isActive = activeChat === chat.id;
+
+const isUnread =
+  chat.lastSenderId &&
+  chat.lastSenderId !== currentUserId &&
+  !isActive;
+
   useEffect(() => {
     const otherUserId = chat.members.find(
       (id) => id !== currentUserId
@@ -36,7 +43,9 @@ const ChatUserItem = ({ chat, currentUserId, onSelectChat,activeChat }) => {
 
   return (
  <div
-  className={`chat-item ${activeChat === chat.id ? "active" : ""}`}
+ className={`chat-item ${isActive ? "active" : ""} ${
+  isUnread ? "unread" : ""
+}`}
   onClick={() => onSelectChat(chat.id)}
 >
   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -53,9 +62,13 @@ const ChatUserItem = ({ chat, currentUserId, onSelectChat,activeChat }) => {
 </b>
     </div>
 
-  <div className="last-msg">
+  <div className="last-msg-row">
+  <span className="last-msg">
     {chat.lastMessage || "No messages yet"}
-  </div>
+  </span>
+
+  {isUnread && <span className="new-badge">NEW</span>}
+</div>
 </div>
   );
 };

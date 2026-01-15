@@ -106,7 +106,8 @@ const cancelReply = () => {
 
     await updateDoc(doc(db, "chats", activeChat), {
       lastMessage: msg,
-      updatedAt: serverTimestamp(),
+      lastSenderId: user.uid,
+      updatedAt: serverTimestamp(),  
     });
 
     setMessage("");
@@ -139,6 +140,7 @@ useEffect(() => {
     if (lastMsg.senderId !== user.uid) {
       await updateDoc(doc(db, "chats", activeChat), {
         lastMessage: lastMsg.text,
+         lastSenderId: lastMsg.senderId,
         updatedAt: serverTimestamp(),
       });
     }
