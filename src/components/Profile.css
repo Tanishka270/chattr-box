@@ -31,6 +31,8 @@ background:
   box-shadow: 0 30px 60px rgba(0,0,0,0.12);
   display: flex;
   flex-direction: column;
+  filter: none !important;
+  opacity: 1 !important;
 }
 
 /* Header gradient */
@@ -216,4 +218,74 @@ background:
   border-color: #22c1a3;
   background: #e6fffa;
   box-shadow: 0 8px 20px rgba(34,193,163,0.4);
+}
+
+
+
+ .profile-field input:disabled,
+.profile-field textarea:disabled,
+.profile-select:disabled {
+  background: #f9fafb;
+  color: #444;
+  cursor: default;
+}
+
+.profile-guest-overlay {
+  position: fixed;
+  inset: 0;
+   background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(8px);
+   -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.profile-guest-card {
+  width: 360px;
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+  animation: pop 0.25s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(0.9); opacity: 0 }
+  to { transform: scale(1); opacity: 1 }
+}
+
+.google-btn {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg,#3b82f6,#22c1a3);
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  margin-top: 13px;
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+}
+
+
+.profile-page.readonly {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+.profile-page.readonly .profile-card {
+  filter: none !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
 }

@@ -4,6 +4,9 @@ import { db } from "./firebase";
 import { doc, setDoc } from "firebase/firestore";
 import "./Profile.css";
 import { useNavigate } from "react-router-dom";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "./firebase";
+
 
 
 
@@ -19,6 +22,9 @@ const Profile = ({ profileUser, onBack }) => {
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
  const [error, setError] = useState("");
+ const [showGuestOverlay, setShowGuestOverlay] = useState(false); 
+
+
 
   useEffect(() => {
     if (user) {
@@ -30,15 +36,35 @@ const Profile = ({ profileUser, onBack }) => {
     }
   }, [viewUser]);
 
-  // 🚫 Guest restriction
-if (!profileUser && user?.isGuest) {
-    return (
-      <div className="profile-guest">
-        <h3>Guest Mode</h3>
-        <p>Login to edit your profile ✨</p>
+
+  {/* // 🚫 Guest restriction */}
+if (user?.isGuest && !profileUser) {
+  return (
+    <div className="profile-guest-overlay">
+      <div className="profile-guest-card">
+        <h2>Login required</h2>
+        <p>Login to create and view your profile ✨</p>
+
+        <button
+          className="google-btn"
+          onClick={() => signInWithPopup(auth, googleProvider)}
+        >
+          Continue with Google
+        </button>
+
+        <button
+          className="cancel-btn"
+          onClick={() => {
+            if (onBack) onBack();     // 👈 chat page
+            else navigate("/chats");
+          }}
+        >
+          Cancel
+        </button>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   const saveProfile = async () => {
     if (!username.trim()) {
@@ -78,7 +104,11 @@ if (!profileUser && user?.isGuest) {
 
   
   return (
-    <div className="profile-page">
+
+<>
+
+
+   <div className={`profile-page ${profileUser ? "readonly" : ""}`}>
       <div className="profile-card">
 
         {/* HEADER */}
@@ -216,6 +246,7 @@ if (!profileUser && user?.isGuest) {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
