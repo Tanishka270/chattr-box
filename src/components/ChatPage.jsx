@@ -222,6 +222,9 @@ setReplyTo(null);
   }
 };
 
+useEffect(() => { // chat change pe reply hata do
+  setReplyTo(null);
+}, [activeChat]);
 
 
 
@@ -262,6 +265,7 @@ setReplyTo(null);
         <UsersList
   onSelectChat={(chatId, otherUser) => {
     setActiveChat(chatId);
+      setReplyTo(null);
     setChatUser(otherUser);  
     setShowUsers(false);
     setShowProfile(false);
