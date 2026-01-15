@@ -33,7 +33,9 @@ setUser(finalUser);
           doc(db, "users", u.uid),
           {
             uid: u.uid,
-             username: u.displayName || u.email?.split("@")[0],
+               username: snap.exists()
+      ? snap.data().username
+      : (u.displayName || u.email?.split("@")[0]),
             email: u.email,
             photoURL: u.photoURL || "",
             createdAt: serverTimestamp(),
