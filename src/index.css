@@ -113,6 +113,7 @@
   top: calc(50vh - 22px);
 }
 
+
 /* ================= MOBILE RESPONSIVE ================= */
 @media (max-width: 768px) {
 
@@ -208,4 +209,9 @@
   width: 18px;
   height: 18px;
 }
+
+
+
 }
+
+
