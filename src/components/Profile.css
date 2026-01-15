@@ -289,3 +289,110 @@ background:
   opacity: 1 !important;
   backdrop-filter: none !important;
 }
+
+/* ================= RESPONSIVE ================= */
+
+/* -------- Tablets (≤ 1024px) -------- */
+@media (max-width: 1024px) {
+  .profile-card {
+    width: 100%;
+    max-width: 720px;
+    min-height: auto;
+  }
+
+  .profile-body {
+    padding: 28px;
+  }
+
+  .profile-username {
+    font-size: 42px;
+  }
+}
+
+/* -------- Mobile (≤ 768px) -------- */
+@media (max-width: 768px) {
+
+  .profile-page {
+    padding: 20px 12px;
+  }
+
+  .profile-card {
+    width: 100%;
+    border-radius: 18px;
+  }
+
+  .profile-header-gradient {
+    padding: 32px 16px 48px;
+  }
+
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    font-size: 36px;
+  }
+
+  .profile-username {
+    font-size: 34px;
+  }
+
+  .profile-realname {
+    font-size: 16px;
+  }
+
+  .profile-body {
+    padding: 20px;
+    gap: 18px;
+  }
+
+  .profile-field input,
+  .profile-field textarea,
+  .profile-select {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .profile-field textarea {
+    min-height: 120px;
+  }
+
+  .avatar-picker {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .avatar-option {
+    width: 46px;
+    height: 46px;
+    font-size: 22px;
+  }
+
+  .profile-save-btn {
+    padding: 14px;
+    font-size: 15px;
+    border-radius: 14px;
+  }
+}
+
+/* -------- Small phones (≤ 420px) -------- */
+@media (max-width: 420px) {
+
+  .profile-username {
+    font-size: 28px;
+  }
+
+  .profile-avatar {
+    width: 72px;
+    height: 72px;
+    font-size: 32px;
+  }
+
+  .profile-guest-card {
+    width: 92%;
+    padding: 24px;
+  }
+
+  .google-btn {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
