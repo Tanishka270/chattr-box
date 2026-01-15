@@ -67,10 +67,9 @@ const isUnread =
         }`}
       />
     <b>
-  {otherUser?.username ||
-   otherUser?.displayName ||
-   otherUser?.name ||
-   "User"}
+  <b>
+  {otherUser?.username || "Unknown"}
+</b>
 </b>
     </div>
 

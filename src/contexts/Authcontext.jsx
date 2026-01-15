@@ -14,12 +14,20 @@ export const AuthProvider = ({ children }) => {
     if (u) {
   const snap = await getDoc(doc(db, "users", u.uid));
 
-  setUser({
-    uid: u.uid,
-    email: u.email,
-    photoURL: u.photoURL,
-    ...(snap.exists() ? snap.data() : {}),
-  });
+  const userData = snap.exists() ? snap.data() : {};
+
+const finalUser = {
+  uid: u.uid,
+  email: u.email,
+  photoURL: u.photoURL,
+  username:
+    userData.username ||
+    u.displayName ||
+    u.email?.split("@")[0],
+  ...userData,
+};
+
+setUser(finalUser);
 
         await setDoc(
           doc(db, "users", u.uid),
