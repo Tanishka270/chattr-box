@@ -292,32 +292,21 @@ background:
 
 /* ================= RESPONSIVE ================= */
 
-/* -------- Tablets (≤ 1024px) -------- */
-@media (max-width: 1024px) {
-  .profile-card {
-    width: 100%;
-    max-width: 720px;
-    min-height: auto;
-  }
-
-  .profile-body {
-    padding: 28px;
-  }
-
-  .profile-username {
-    font-size: 42px;
-  }
-}
-
 /* -------- Mobile (≤ 768px) -------- */
 @media (max-width: 768px) {
 
+  
   .profile-page {
-    padding: 20px 12px;
+    height: 100vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    align-items: flex-start;     
+    padding: 20px 12px 120px;     
   }
 
   .profile-card {
     width: 100%;
+    min-height: auto;              
     border-radius: 18px;
   }
 
@@ -366,10 +355,14 @@ background:
     font-size: 22px;
   }
 
+
   .profile-save-btn {
     padding: 14px;
     font-size: 15px;
     border-radius: 14px;
+    position: sticky;
+    bottom: 12px;
+    z-index: 5;
   }
 }
 
