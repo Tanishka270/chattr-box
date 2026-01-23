@@ -52,12 +52,20 @@ const isUnread =
  className={`chat-item ${isActive ? "active" : ""} ${
   isUnread ? "unread" : ""
 }`}
- onClick={async () => { // mark as read on click 
+
+onClick={async () => { // mark as read on click
   onSelectChat(chat.id);
 
-  await updateDoc(doc(db, "chats", chat.id), {
-    readBy: arrayUnion(currentUserId),
-  });
+  // 🟡 guest → no Firestore write
+  if (!currentUserId) return;
+
+  try {
+    await updateDoc(doc(db, "chats", chat.id), {
+      readBy: arrayUnion(currentUserId),
+    });
+  } catch (e) {
+    console.warn("Guest read update skipped");
+  }
 }}
 >
   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -92,7 +100,7 @@ const ChatListNew = ({ onSelectChat, onNewChat ,activeChat}) => {
 const [showLoginHint, setShowLoginHint] = useState(false);
 
   useEffect(() => {
-    if (!user) return;
+   if (!user || user.isGuest) return;
 
     const q = query(
       collection(db, "chats"),
@@ -132,17 +140,31 @@ const [showLoginHint, setShowLoginHint] = useState(false);
       <div style={{ padding: "10px", borderBottom: "1px solid #eee" }}>
         
 <button
-  onClick={async () => {
-    await setDoc(
-  doc(db, "users", user.uid),
-  {
-    isOnline: false,
-    lastSeen: serverTimestamp(),
-  },
-  { merge: true }
-);
-    await signOut(auth);
-    navigate("/login");
+  onClick={() => {
+    // ✅ GUEST USER → NO FIREBASE
+    if (user?.isGuest) {
+      localStorage.removeItem("guestUser");
+      navigate("/login");
+      return;
+    }
+
+    // 🔵 LOGGED-IN USER
+    (async () => {
+      try {
+        await setDoc(
+          doc(db, "users", user.uid),
+          {
+            isOnline: false,
+            lastSeen: serverTimestamp(),
+          },
+          { merge: true }
+        );
+        await signOut(auth);
+      } catch (e) {
+        console.error("Logout error:", e);
+      }
+      navigate("/login");
+    })();
   }}
   className="logout-btn"
 >

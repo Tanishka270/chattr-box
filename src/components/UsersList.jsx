@@ -39,6 +39,13 @@ const UsersList = ({ onSelectChat, onClose }) => {
 
   //  Start or open a chat with another user
 const startChat = async (otherUser) => {
+   // 🟡 GUEST USER → Firebase bilkul nahi
+  if (user?.isGuest) {
+   onSelectChat("GUEST_PREVIEW", otherUser);
+    onClose();
+    return;
+  }
+
   if (!user?.uid || !otherUser?.uid) {
     return;
   }
@@ -50,6 +57,7 @@ const startChat = async (otherUser) => {
   );
 
   const snap = await getDocs(q);
+  
   let existingChatId = null;
 
   snap.forEach((doc) => {
